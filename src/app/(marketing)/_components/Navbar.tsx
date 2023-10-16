@@ -1,7 +1,7 @@
 "use client";
 
 import { ModeToggle } from "@/components/mode-toggle";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import useScrollTop from "@/hooks/useScrollTop";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -36,12 +36,14 @@ const Navbar = () => {
             <>
               <li>
                 <SignInButton mode="modal">
-                  <Button variant="ghost">Log in</Button>
+                  <Button variant="ghost" size="sm">
+                    Log in
+                  </Button>
                 </SignInButton>
               </li>
               <li>
                 <SignInButton mode="modal">
-                  <Button>Get Notion Free</Button>
+                  <Button size="sm">Get Notion Free</Button>
                 </SignInButton>
               </li>
             </>
@@ -49,7 +51,12 @@ const Navbar = () => {
           {isAuthenticated && !isLoading && (
             <>
               <li>
-                <Button variant="ghost">Enter Notion</Button>
+                <Link
+                  href="/documents"
+                  className={buttonVariants({ variant: "ghost", size: "sm" })}
+                >
+                  Enter Notion
+                </Link>
               </li>
               <li>
                 <UserButton afterSignOutUrl="/" />

@@ -1,7 +1,7 @@
 "use client";
 
 import Spinner from "@/components/Spinner";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { SignInButton } from "@clerk/clerk-react";
 import { useConvexAuth } from "convex/react";
 import { ArrowRight } from "lucide-react";
@@ -23,18 +23,18 @@ function Heading() {
         </div>
       )}
       {isAuthenticated && !isLoading && (
-        <Button size="lg" asChild>
-          <Link href="/documents">Enter Notion</Link>
+        <Link href="/documents" className={buttonVariants()}>
+          Enter Notion
           <ArrowRight
             aria-label="arrow right"
             size={18}
             className="ml-1.5 text-white"
           />
-        </Button>
+        </Link>
       )}
       {!isAuthenticated && !isLoading && (
         <SignInButton mode="modal">
-          <Button size="lg">
+          <Button>
             Get Notion Free
             <ArrowRight
               aria-label="arrow right"

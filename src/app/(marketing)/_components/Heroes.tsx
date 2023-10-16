@@ -25,7 +25,7 @@ const Heroes = () => {
           fill
           sizes="(max-width: 768px) 100vw"
           alt="reading"
-          className="object-contain hidden"
+          className="object-contain dark:hidden"
         />
         <Image
           src="/reading-dark.png"

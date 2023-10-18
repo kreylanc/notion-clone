@@ -1,9 +1,21 @@
 import { cn } from "@/lib/utils";
-import { ChevronsLeft, MenuIcon } from "lucide-react";
+import {
+  ChevronsLeft,
+  MenuIcon,
+  PlusCircle,
+  Search,
+  Settings,
+} from "lucide-react";
 import { usePathname } from "next/navigation";
 import React, { ElementRef, useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 import UserItem from "./UserItem";
+import { useMutation } from "convex/react";
+import { api } from "../../../../convex/_generated/api";
+import Item from "./Item";
+import { toast } from "sonner";
+import DocumentList from "./DocumentList";
+
 const Navigation = () => {
   const pathname = usePathname();
 
@@ -17,6 +29,19 @@ const Navigation = () => {
   // useStates for navbar resizing and collapsing
   const [isResetting, setIsResetting] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(isMobile); // always true if mobile user
+
+  // convex API hooks hook
+  const createDocument = useMutation(api.documents.create);
+
+  const onCreate = () => {
+    const promise = createDocument({ title: "Untitled" });
+
+    toast.promise(promise, {
+      loading: "Creating a new note...",
+      success: "New note created!",
+      error: "Failed to create a new note.",
+    });
+  };
 
   useEffect(() => {
     if (isMobile) {
@@ -126,9 +151,12 @@ const Navigation = () => {
         </div>
         <div>
           <UserItem />
+          <Item onClick={() => {}} label="Search" icon={Search} isSearch />
+          <Item onClick={() => {}} label="Settings" icon={Settings} />
+          <Item onClick={onCreate} label="New page" icon={PlusCircle} />
         </div>
         <div className="mt-4">
-          <p>Documents</p>
+          <DocumentList />
         </div>
         <div
           onMouseDown={handleMouseDown}

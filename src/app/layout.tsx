@@ -28,7 +28,7 @@ export default function RootLayout({
             disableTransitionOnChange
             storageKey="notion-theme"
           >
-            <Toaster position="bottom-center" />
+            <Toaster position="bottom-center" richColors />
             {children}
           </ThemeProvider>
         </ConvexClientProvider>

@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { toast } from "sonner";
 import { useState } from "react";
-import ConfirmModal from "./ConfirmModal";
+import ConfirmModal from "@/components/modals/ConfirmModal";
 
 const TrashBox = () => {
   const router = useRouter();
@@ -24,7 +24,7 @@ const TrashBox = () => {
 
   // route to the note page on click
   const onClickRoute = (docId: string) => {
-    // router.push(`documents/${docId}`);
+    router.push(`documents/${docId}`);
   };
 
   // event for restoring archived note
@@ -86,14 +86,14 @@ const TrashBox = () => {
               <div
                 onClick={(e) => onRestore(e, note._id)}
                 role="button"
-                className="rounded-sm p-2 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200"
+                className="rounded-sm p-2 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700"
               >
                 <Undo2 size={18} />
               </div>
               <ConfirmModal onConfirm={() => onDelete(note._id)}>
                 <div
                   role="button"
-                  className="rounded-sm p-2 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200"
+                  className="rounded-sm p-2 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700"
                 >
                   <Trash2 size={18} />
                 </div>

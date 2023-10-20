@@ -23,6 +23,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import TrashBox from "./TrashBox";
+import { useSearch } from "@/hooks/useSearch";
+import { useSettings } from "@/hooks/useSettings";
 
 const Navigation = () => {
   const pathname = usePathname();
@@ -33,6 +35,10 @@ const Navigation = () => {
   const isResizingRef = useRef(false);
   const sidebarRef = useRef<ElementRef<"aside">>(null);
   const navbarRef = useRef<ElementRef<"div">>(null);
+
+  // get search feature state from store
+  const onOpen = useSearch((state) => state.onOpen);
+  const settings = useSettings();
 
   // useStates for navbar resizing and collapsing
   const [isResetting, setIsResetting] = useState(false);
@@ -159,8 +165,8 @@ const Navigation = () => {
         </div>
         <div>
           <UserItem />
-          <Item onClick={() => {}} label="Search" icon={Search} isSearch />
-          <Item onClick={() => {}} label="Settings" icon={Settings} />
+          <Item onClick={onOpen} label="Search" icon={Search} isSearch />
+          <Item onClick={settings.onOpen} label="Settings" icon={Settings} />
           <Item onClick={onCreate} label="New page" icon={PlusCircle} />
         </div>
         <div className="mt-4">
@@ -171,7 +177,7 @@ const Navigation = () => {
               <Item label="Trash" icon={Trash} />
             </PopoverTrigger>
             <PopoverContent
-              className="text-sm p-0.5"
+              className="text-sm bg-secondary p-0.5"
               side={isMobile ? "bottom" : "right"}
             >
               <TrashBox />

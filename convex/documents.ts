@@ -232,3 +232,25 @@ export const remove = mutation({
     await ctx.db.delete(args.id);
   },
 });
+
+export const documentsByUser = query({
+  handler: async (ctx) => {
+    const user = await ctx.auth.getUserIdentity(); //returns an object with user details
+
+    // throw error if user does not exist
+    if (!user) {
+      throw new Error("Not authenticated");
+    }
+
+    const userId = user.subject;
+
+    // query by user index
+    const documents = await ctx.db
+      .query("documents")
+      .withIndex("by_user", (q) => q.eq("userId", userId))
+      .filter((q) => q.eq(q.field("isArchived"), false))
+      .collect();
+
+    return documents;
+  },
+});

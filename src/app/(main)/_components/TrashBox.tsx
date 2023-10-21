@@ -24,7 +24,7 @@ const TrashBox = () => {
 
   // route to the note page on click
   const onClickRoute = (docId: string) => {
-    router.push(`documents/${docId}`);
+    router.push(`/documents/${docId}`);
   };
 
   // event for restoring archived note

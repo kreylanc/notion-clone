@@ -8,7 +8,7 @@ import {
   Settings,
   Trash,
 } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import React, { ElementRef, useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 import UserItem from "./UserItem";
@@ -25,9 +25,12 @@ import {
 import TrashBox from "./TrashBox";
 import { useSearch } from "@/hooks/useSearch";
 import { useSettings } from "@/hooks/useSettings";
+import DocHeader from "./header/DocHeader";
 
 const Navigation = () => {
-  const pathname = usePathname();
+  const params = useParams();
+
+  const pathname = usePathname(); // USED for collapsing the sidebar when note is opened on mobile devices
 
   // mediaQuery hook to check user's viewport
   const isMobile = useMediaQuery("(max-width: 768px)");
@@ -122,7 +125,7 @@ const Navigation = () => {
       navbarRef.current.style.setProperty("left", isMobile ? "100%" : "240px");
       navbarRef.current.style.setProperty(
         "width",
-        isMobile ? "0" : "calc(100%-240px)"
+        isMobile ? "0" : "calc(100% - 240px)"
       );
 
       setTimeout(() => setIsResetting(false), 300);
@@ -146,7 +149,7 @@ const Navigation = () => {
     <>
       <aside
         ref={sidebarRef}
-        aria-label="sidebar menu"
+        aria-label="navigation menu"
         className={cn(
           "relative flex w-60 flex-col h-full bg-secondary group/sidebar overflow-y-auto z-[999]",
           isResetting && "transition-all ease-in-out duration-300",
@@ -190,7 +193,7 @@ const Navigation = () => {
           className="opacity-0 group-hover/sidebar:opacity-100 transition cursor-ew-resize absolute h-full w-1 bg-primary/10 right-0 top-0"
         />
       </aside>
-      <div
+      <header
         ref={navbarRef}
         className={cn(
           "absolute left-60 top-0 w-[calc(100%-240px)] z-[9999]",
@@ -198,16 +201,20 @@ const Navigation = () => {
           isMobile && "w-full left-0"
         )}
       >
-        <nav className="bg-transparent px-3 py-2 w-full">
-          {isCollapsed ? (
-            <MenuIcon
-              onClick={resetWidth}
-              role="button"
-              className="text-muted-foreground"
-            />
-          ) : null}
-        </nav>
-      </div>
+        {!!params.documentId ? (
+          <DocHeader isCollapsed={isCollapsed} onResetWidth={resetWidth} />
+        ) : (
+          <div className="bg-transparent px-3 py-2 w-full">
+            {isCollapsed ? (
+              <MenuIcon
+                onClick={resetWidth}
+                role="button"
+                className="text-muted-foreground"
+              />
+            ) : null}
+          </div>
+        )}
+      </header>
     </>
   );
 };

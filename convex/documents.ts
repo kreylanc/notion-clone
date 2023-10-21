@@ -254,3 +254,89 @@ export const documentsByUser = query({
     return documents;
   },
 });
+
+// End point for fetching single document
+export const getDocById = query({
+  args: { id: v.id("documents") },
+  handler: async (ctx, args) => {
+    const user = await ctx.auth.getUserIdentity(); //returns an object with user details
+
+    // throw error if user does not exist
+    if (!user) {
+      throw new Error("Not authenticated");
+    }
+
+    const userId = user.subject;
+
+    const document = await ctx.db.get(args.id);
+
+    if (!document) {
+      throw new Error("Not found");
+    }
+
+    // if its published and is not archived return the document
+    // Anyone can access the published note
+    if (document.isPublished && !document.isArchived) {
+      return document;
+    }
+
+    // Otherwise only user can access the note
+    if (document.userId !== userId) {
+      throw new Error("Not authorized");
+    }
+
+    const parentNote = async (docId: Id<"documents">) => {
+      const parent = await ctx.db.get(docId);
+
+      parentDetails = { ...parentDetails, ...parent };
+      if (parent?.parentDocument) {
+        parentNote(parent.parentDocument);
+      }
+    };
+    let parentDetails: Doc<"documents">;
+    // document.parentDocument && parentNote(document.parentDocument);
+
+    return document;
+  },
+});
+
+// end point for updating the document data
+export const update = mutation({
+  args: {
+    id: v.id("documents"),
+    title: v.optional(v.string()),
+    content: v.optional(v.string()),
+    coverImage: v.optional(v.string()),
+    icon: v.optional(v.string()),
+    isPublished: v.optional(v.boolean()),
+  },
+  handler: async (ctx, args) => {
+    const user = await ctx.auth.getUserIdentity(); //returns an object with user details
+
+    // throw error if user does not exist
+    if (!user) {
+      throw new Error("Not authenticated");
+    }
+
+    const userId = user.subject;
+
+    const document = await ctx.db.get(args.id);
+
+    if (!document) {
+      throw new Error("Not found");
+    }
+
+    if (document.userId !== userId) {
+      throw new Error("Unauthorizzed");
+    }
+
+    // destructing to separate the id and the rest of the values
+    const { id, ...rest } = args;
+
+    const updatedDocument = await ctx.db.patch(id, {
+      ...rest,
+    });
+
+    return updatedDocument;
+  },
+});

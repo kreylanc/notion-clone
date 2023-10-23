@@ -53,7 +53,6 @@ const Title = ({ initialData }: TitleProps) => {
 
   return (
     <div className="flex items-center gap-x-1">
-      {!!initialData.icon && <p>{initialData.icon}</p>}
       {isEditing ? (
         <Input
           ref={inputRef}
@@ -67,6 +66,10 @@ const Title = ({ initialData }: TitleProps) => {
         />
       ) : (
         <Button onClick={enableInput} variant="ghost" size="sm" className="">
+          {!!initialData.icon && (
+            <span className="mr-2">{initialData.icon}</span>
+          )}
+
           <span className="truncate">{initialData?.title}</span>
         </Button>
       )}

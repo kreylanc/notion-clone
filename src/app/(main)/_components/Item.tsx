@@ -124,7 +124,7 @@ const Item = ({
       )}
       {/* Display the user set icon else display a default doc icon */}
       {documentIcon ? (
-        <div className="shrink-0 mr-2 text-[18px]">{documentIcon}</div>
+        <span className="shrink-0 mr-2 text-[16px]">{documentIcon}</span>
       ) : (
         <Icon className="shrink-0 h-[18px] mr-2 text-muted-foreground " />
       )}

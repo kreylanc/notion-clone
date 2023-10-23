@@ -78,6 +78,7 @@ const DocumentList = ({
             level={level}
             onExpand={() => onExpand(doc._id)}
             expanded={expanded[doc._id]}
+            documentIcon={doc.icon}
           />
           {/* if expanded render this component itself  */}
           {expanded[doc._id] ? (

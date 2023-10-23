@@ -327,7 +327,7 @@ export const update = mutation({
     }
 
     if (document.userId !== userId) {
-      throw new Error("Unauthorizzed");
+      throw new Error("Unauthorized");
     }
 
     // destructing to separate the id and the rest of the values
@@ -338,5 +338,36 @@ export const update = mutation({
     });
 
     return updatedDocument;
+  },
+});
+
+// end point for removing the icon
+export const removeIcon = mutation({
+  args: { id: v.id("documents") },
+  handler: async (ctx, args) => {
+    const user = await ctx.auth.getUserIdentity(); //returns an object with user details
+
+    // throw error if user does not exist
+    if (!user) {
+      throw new Error("Not authenticated");
+    }
+
+    const userId = user.subject;
+
+    const existingDocument = await ctx.db.get(args.id);
+
+    if (!existingDocument) {
+      throw new Error("Not found");
+    }
+
+    if (existingDocument.userId !== userId) {
+      throw new Error("Unauthorized");
+    }
+
+    const doc = await ctx.db.patch(args.id, {
+      icon: undefined,
+    });
+
+    return doc;
   },
 });

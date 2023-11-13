@@ -8,7 +8,7 @@ import {
   Settings,
   Trash,
 } from "lucide-react";
-import { useParams, usePathname } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import React, { ElementRef, useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 import UserItem from "./UserItem";
@@ -29,6 +29,7 @@ import DocHeader from "./header/DocHeader";
 
 const Navigation = () => {
   const params = useParams();
+  const router = useRouter();
 
   const pathname = usePathname(); // USED for collapsing the sidebar when note is opened on mobile devices
 
@@ -51,7 +52,9 @@ const Navigation = () => {
   const createDocument = useMutation(api.documents.create);
 
   const onCreate = () => {
-    const promise = createDocument({ title: "Untitled" });
+    const promise = createDocument({ title: "Untitled" }).then((documentId) => {
+      router.push(`/documents/${documentId}`);
+    });
 
     toast.promise(promise, {
       loading: "Creating a new note...",

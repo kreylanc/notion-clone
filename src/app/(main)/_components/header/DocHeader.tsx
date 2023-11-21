@@ -8,6 +8,7 @@ import { MenuIcon } from "lucide-react";
 import Title from "../Title";
 import Banner from "./Banner";
 import Menu from "./Menu";
+import Publish from "../Publish";
 
 type HeaderProps = {
   isCollapsed: boolean;
@@ -35,7 +36,7 @@ const DocHeader = ({ isCollapsed, onResetWidth }: HeaderProps) => {
 
   return (
     <>
-      <div className="flex w-full items-center px-3 py-2 gap-x-4">
+      <div className="flex w-full bg-primary-foreground items-center px-3 py-2 gap-x-4">
         {isCollapsed && (
           <MenuIcon
             role="button"
@@ -45,7 +46,8 @@ const DocHeader = ({ isCollapsed, onResetWidth }: HeaderProps) => {
         )}
         <div className="flex items-center justify-between w-full">
           <Title initialData={note} />
-          <div className="flex gap-x-2">
+          <div className="flex items-center gap-x-2">
+            <Publish initialData={note} />
             <Menu docId={note._id} />
           </div>
         </div>

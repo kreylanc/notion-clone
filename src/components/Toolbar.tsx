@@ -7,6 +7,7 @@ import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import TextareaAutosize from "react-textarea-autosize";
 import { useCoverImage } from "@/hooks/useCoverImage";
+import { cn } from "@/lib/utils";
 
 type ToolbarProps = {
   initialData: Doc<"documents">;
@@ -74,11 +75,16 @@ const Toolbar = ({ initialData, preview }: ToolbarProps) => {
   };
 
   return (
-    <div className="pl-[54px] mt-10 group relative">
+    <div className="pl-[54px] group relative">
       {!!initialData.icon && !preview && (
-        <div className="inline-flex relative items-center gap-x-2 group/icon pt-6">
+        <div
+          className={cn(
+            "inline-flex relative items-center gap-x-2 group/icon pt-6",
+            initialData.coverImage && "-mt-14"
+          )}
+        >
           <IconPicker onChange={onChange}>
-            <span className="text-6xl group-hover/icon:bg-secondary transition">
+            <span className="text-6xl group-hover/icon:bg-primary/20 dark:group-hover/icon:bg-primary/5 rounded-sm transition">
               {initialData.icon}
             </span>
           </IconPicker>
@@ -92,7 +98,11 @@ const Toolbar = ({ initialData, preview }: ToolbarProps) => {
         </div>
       )}
       {!!initialData.icon && preview && (
-        <div className="text-6xl pt-6">{initialData.icon}</div>
+        <div
+          className={`${initialData.coverImage ? "-mt-14" : ""} text-6xl pt-6`}
+        >
+          {initialData.icon}
+        </div>
       )}
       <div className="opacity-0 group-hover:opacity-100 text-xs transition flex items-center mt-4">
         {!initialData.icon && !preview && (

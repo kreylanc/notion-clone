@@ -7,14 +7,18 @@ import { PlusCircle } from "lucide-react";
 import Image from "next/image";
 import { api } from "../../../../../convex/_generated/api";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const DocumentPage = () => {
   const { user } = useUser();
+  const router = useRouter();
 
   const createDocument = useMutation(api.documents.create);
 
   const onCreate = () => {
-    const promise = createDocument({ title: "Untitled" });
+    const promise = createDocument({ title: "Untitled" }).then((documentId) => {
+      router.push(`/documents/${documentId}`);
+    });
 
     toast.promise(promise, {
       loading: "Creating a new note...",

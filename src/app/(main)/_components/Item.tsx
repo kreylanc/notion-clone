@@ -126,7 +126,7 @@ const Item = ({
       {documentIcon ? (
         <span className="shrink-0 mr-2 text-[16px]">{documentIcon}</span>
       ) : (
-        <Icon className="shrink-0 h-[18px] mr-2 text-muted-foreground " />
+        <Icon className="shrink-0 h-[18px] w-[18px] mr-2 text-muted-foreground " />
       )}
       {/* Note title */}
       <span className="truncate">{label}</span>

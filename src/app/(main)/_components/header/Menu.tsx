@@ -17,19 +17,15 @@ import { useRouter } from "next/navigation";
 const Menu = ({ docId }: { docId: Id<"documents"> }) => {
   const { user } = useUser();
 
-  const router = useRouter();
-
-  const removeNote = useMutation(api.documents.remove);
-  const onRemove = () => {
-    const promise = removeNote({ id: docId });
+  const archiveNote = useMutation(api.documents.archive);
+  const onArchive = () => {
+    const promise = archiveNote({ id: docId });
 
     toast.promise(promise, {
-      loading: "Deleting Note...",
-      success: "Note permanently deleted!",
+      loading: "Moving to trash...",
+      success: "Note moved to trash!",
       error: "Failed to delete note.",
     });
-
-    router.push("/documents");
   };
   return (
     <DropdownMenu>
@@ -39,7 +35,7 @@ const Menu = ({ docId }: { docId: Id<"documents"> }) => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-52">
-        <DropdownMenuItem onClick={onRemove}>
+        <DropdownMenuItem onClick={onArchive}>
           <Trash2 className="mr-2" size={16} />
           Delete
         </DropdownMenuItem>

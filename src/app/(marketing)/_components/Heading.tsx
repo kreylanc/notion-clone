@@ -28,7 +28,7 @@ function Heading() {
           <ArrowRight
             aria-label="arrow right"
             size={18}
-            className="ml-1.5 text-white"
+            className="ml-1.5 text-secondary"
           />
         </Link>
       )}
@@ -39,7 +39,7 @@ function Heading() {
             <ArrowRight
               aria-label="arrow right"
               size={18}
-              className="ml-1.5 text-white"
+              className="ml-1.5 text-secondary"
             />
           </Button>
         </SignInButton>

@@ -33,7 +33,7 @@ const SearchCommand = () => {
 
   // route to the note page when it is selected
   const onSelect = (id: string) => {
-    router.push(`documents/${id}`);
+    router.push(`/documents/${id}`);
 
     onClose();
   };

@@ -9,11 +9,16 @@ import { Id } from "../../../../convex/_generated/dataModel";
 import { toast } from "sonner";
 import { useState } from "react";
 import ConfirmModal from "@/components/modals/ConfirmModal";
+import { useEdgeStore } from "@/lib/edgestore";
+import { useCoverImage } from "@/hooks/useCoverImage";
 
 const TrashBox = () => {
   const router = useRouter();
   // state for input field
   const [search, setSearch] = useState("");
+
+  const { edgestore } = useEdgeStore();
+  const coverImage = useCoverImage();
 
   // Call API end points
   const archivedNotes = useQuery(api.documents.getArchived);
@@ -33,7 +38,9 @@ const TrashBox = () => {
     id: Id<"documents">
   ) => {
     e.stopPropagation();
-    const promise = restoreNote({ id });
+    const promise = restoreNote({ id }).then(() => {
+      router.push(`/documents/${id}`);
+    });
 
     toast.promise(promise, {
       loading: "Restoring Note...",
@@ -43,7 +50,12 @@ const TrashBox = () => {
   };
 
   // event for deleting note from DB
-  const onDelete = (id: Id<"documents">) => {
+  const onDelete = async (id: Id<"documents">) => {
+    if (coverImage.url) {
+      await edgestore.publicFiles.delete({
+        url: coverImage.url,
+      });
+    }
     const promise = removeNote({ id });
 
     toast.promise(promise, {
@@ -51,6 +63,8 @@ const TrashBox = () => {
       success: "Note permanently deleted!",
       error: "Failed to delete note.",
     });
+
+    router.push(`/documents`);
   };
 
   return (

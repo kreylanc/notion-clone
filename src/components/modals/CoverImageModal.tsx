@@ -43,6 +43,8 @@ const CoverImageModal = () => {
         id: params.documentId as Id<"documents">,
         coverImage: res.url,
       });
+      coverImage.url = res.url;
+
       onClose();
     }
   };

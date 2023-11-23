@@ -261,13 +261,6 @@ export const getDocById = query({
   handler: async (ctx, args) => {
     const user = await ctx.auth.getUserIdentity(); //returns an object with user details
 
-    // throw error if user does not exist
-    if (!user) {
-      throw new Error("Not authenticated");
-    }
-
-    const userId = user.subject;
-
     const document = await ctx.db.get(args.id);
 
     if (!document) {
@@ -280,20 +273,27 @@ export const getDocById = query({
       return document;
     }
 
+    // throw error if user does not exist
+    if (!user) {
+      throw new Error("Not authenticated");
+    }
+
+    const userId = user.subject;
+
     // Otherwise only user can access the note
     if (document.userId !== userId) {
       throw new Error("Not authorized");
     }
 
-    const parentNote = async (docId: Id<"documents">) => {
-      const parent = await ctx.db.get(docId);
+    // const parentNote = async (docId: Id<"documents">) => {
+    //   const parent = await ctx.db.get(docId);
 
-      parentDetails = { ...parentDetails, ...parent };
-      if (parent?.parentDocument) {
-        parentNote(parent.parentDocument);
-      }
-    };
-    let parentDetails: Doc<"documents">;
+    //   parentDetails = { ...parentDetails, ...parent };
+    //   if (parent?.parentDocument) {
+    //     parentNote(parent.parentDocument);
+    //   }
+    // };
+    // let parentDetails: Doc<"documents">;
     // document.parentDocument && parentNote(document.parentDocument);
 
     return document;
